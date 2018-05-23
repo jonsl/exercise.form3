@@ -37,34 +37,41 @@ public class PaymentTests {
                 "Payment",
                 "4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43",
                 0,
-                "743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb",
+                "743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb");
 
-                new Payment.PaymentAttribute(
-                        "100.21",
-                        new Payment.PaymentAttribute.BeneficiaryParty("W Owens", "31926819", "BBAN", 0, "1 The Beneficiary Localtown SE2", "403000", "GBDSC", "Wilfred Jeremiah Owens"),
-                        new Payment.PaymentAttribute.ChargesInformation(
-                                "SHAR",
-                                new ArrayList<>(Arrays.asList(
-                                        new Payment.SenderCharges("5.00", "GBP"),
-                                        new Payment.SenderCharges("10.00", "USD")
-                                )),
-                                "1.00", "USD"),
-                        "GBP",
-                        new Payment.DebtorParty("EJ Brown Black", "GB29XABC10161234567801", "IBAN", "10 Debtor Crescent Sourcetown NE1", "203301", "GBDSC", "Emelia Jane Brown"),
-                        "Wil piano Jan",
-                        new Payment.Fx("FX123", "2.00000", "200.42", "USD"),
-                        "1002001",
-                        "123456789012345678",
-                        "Paying for goods/services",
-                        "FPS",
-                        "Credit",
-                        "2017-01-18",
-                        "Payment for Em's piano lessons",
-                        "InternetBanking",
-                        "ImmediatePayment",
-                        new Payment.SponsorParty("56781234", "123123", "GBDSC")
-                )
-        );
+//        return new Payment(
+//
+//                "Payment",
+//                "4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43",
+//                0,
+//                "743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb",
+//
+//                new Payment.PaymentAttribute(
+//                        "100.21",
+//                        new Payment.BeneficiaryParty("W Owens", "31926819", "BBAN", 0, "1 The Beneficiary Localtown SE2", "403000", "GBDSC", "Wilfred Jeremiah Owens"),
+//                        new Payment.ChargesInformation(
+//                                "SHAR",
+//                                new ArrayList<>(Arrays.asList(
+//                                        new Payment.SenderCharges("5.00", "GBP"),
+//                                        new Payment.SenderCharges("10.00", "USD")
+//                                )),
+//                                "1.00", "USD"),
+//                        "GBP",
+//                        new Payment.DebtorParty("EJ Brown Black", "GB29XABC10161234567801", "IBAN", "10 Debtor Crescent Sourcetown NE1", "203301", "GBDSC", "Emelia Jane Brown"),
+//                        "Wil piano Jan",
+//                        new Payment.Fx("FX123", "2.00000", "200.42", "USD"),
+//                        "1002001",
+//                        "123456789012345678",
+//                        "Paying for goods/services",
+//                        "FPS",
+//                        "Credit",
+//                        "2017-01-18",
+//                        "Payment for Em's piano lessons",
+//                        "InternetBanking",
+//                        "ImmediatePayment",
+//                        new Payment.SponsorParty("56781234", "123123", "GBDSC")
+//                )
+//        );
     }
 
     @Test
@@ -86,7 +93,7 @@ public class PaymentTests {
 
         Set<ConstraintViolation<Payment>> constraintViolations = validator.validate(payment);
 
-        assertEquals(4, constraintViolations.size());
+        assertEquals(3, constraintViolations.size());
         assertEquals(NULL_ERROR_MESSAGE, constraintViolations.iterator().next().getMessage());
     }
 }

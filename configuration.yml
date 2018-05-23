@@ -1,7 +1,13 @@
 database:
   driverClass: org.sqlite.JDBC
-  url: "jdbc:sqlite::memory:"
+
+  # the JDBC URL
+  url: jdbc:sqlite:dev.db
+
+  # the JDBC user
+  user: jslater
+#  url: "jdbc:sqlite::memory:"
   properties:
     charSet: UTF-8
 server:
-  rootPath: /v1/*
+  rootPath: /v1/public/*

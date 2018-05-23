@@ -23,7 +23,7 @@ public class Payment {
     @NotNull
     @JsonProperty("organisation_id")
     private String organisationId;
-    @NotNull
+    //    @NotNull
     @JsonProperty("attributes")
     private PaymentAttribute attributes;
 
@@ -35,13 +35,13 @@ public class Payment {
     public Payment(@JsonProperty("type") String type,
                    @JsonProperty("id") String id,
                    @JsonProperty("version") int version,
-                   @JsonProperty("organisation_id") String organisationId,
-                   @JsonProperty("attributes") PaymentAttribute attributes) {
+                   @JsonProperty("organisation_id") String organisationId) {
+//                   @JsonProperty("attributes") PaymentAttribute attributes) {
         this.type = type;
         this.id = id;
         this.version = version;
         this.organisationId = organisationId;
-        this.attributes = attributes;
+//        this.attributes = attributes;
     }
 
     public String getType() {
@@ -266,161 +266,161 @@ public class Payment {
 
             return true;
         }
+    }
 
-        public static class BeneficiaryParty {
+    public static class BeneficiaryParty {
 
-            @NotNull
-            @JsonProperty("account_name")
-            private String accountName;
-            @NotNull
-            @JsonProperty("account_number")
-            private String accountNumber;
-            @NotNull
-            @JsonProperty("account_number_code")
-            private String accountNumberCode;
-            @NotNull
-            @JsonProperty("account_type")
-            private int accountType;
-            @NotNull
-            @JsonProperty("address")
-            private String address;
-            @NotNull
-            @JsonProperty("bank_id")
-            private String bankId;
-            @NotNull
-            @JsonProperty("bank_id_code")
-            private String bankIdCode;
-            @NotNull
-            @JsonProperty("name")
-            private String name;
+        @NotNull
+        @JsonProperty("account_name")
+        private String accountName;
+        @NotNull
+        @JsonProperty("account_number")
+        private String accountNumber;
+        @NotNull
+        @JsonProperty("account_number_code")
+        private String accountNumberCode;
+        @NotNull
+        @JsonProperty("account_type")
+        private int accountType;
+        @NotNull
+        @JsonProperty("address")
+        private String address;
+        @NotNull
+        @JsonProperty("bank_id")
+        private String bankId;
+        @NotNull
+        @JsonProperty("bank_id_code")
+        private String bankIdCode;
+        @NotNull
+        @JsonProperty("name")
+        private String name;
 
-            @JsonCreator
-            public BeneficiaryParty(@JsonProperty("account_name") String accountName,
-                                    @JsonProperty("account_number") String accountNumber,
-                                    @JsonProperty("account_number_code") String accountNumberCode,
-                                    @JsonProperty("account_type") int accountType,
-                                    @JsonProperty("address") String address,
-                                    @JsonProperty("bank_id") String bankId,
-                                    @JsonProperty("bank_id_code") String bankIdCode,
-                                    @JsonProperty("name") String name) {
-                this.accountName = accountName;
-                this.accountNumber = accountNumber;
-                this.accountNumberCode = accountNumberCode;
-                this.accountType = accountType;
-                this.address = address;
-                this.bankId = bankId;
-                this.bankIdCode = bankIdCode;
-                this.name = name;
-            }
-
-            public String getAccountName() {
-                return accountName;
-            }
-
-            public String getAccountNumber() {
-                return accountNumber;
-            }
-
-            public String getAccountNumberCode() {
-                return accountNumberCode;
-            }
-
-            public int getAccountType() {
-                return accountType;
-            }
-
-            public String getAddress() {
-                return address;
-            }
-
-            public String getBankId() {
-                return bankId;
-            }
-
-            public String getBankIdCode() {
-                return bankIdCode;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            @Override
-            public boolean equals(Object o) {
-                if (this == o) return true;
-                if (!(o instanceof BeneficiaryParty)) return false;
-
-                BeneficiaryParty that = (BeneficiaryParty) o;
-
-                if (!getAccountName().equals(that.getAccountName())) return false;
-                if (!getAccountNumber().equals(that.getAccountNumber())) return false;
-                if (!getAccountNumberCode().equals(that.getAccountNumberCode())) return false;
-                if (getAccountType() != that.getAccountType()) return false;
-                if (!getAddress().equals(that.getAddress())) return false;
-                if (!getBankId().equals(that.getBankId())) return false;
-                if (!getBankIdCode().equals(that.getBankIdCode())) return false;
-                if (!getName().equals(that.getName())) return false;
-
-                return true;
-            }
+        @JsonCreator
+        public BeneficiaryParty(@JsonProperty("account_name") String accountName,
+                                @JsonProperty("account_number") String accountNumber,
+                                @JsonProperty("account_number_code") String accountNumberCode,
+                                @JsonProperty("account_type") int accountType,
+                                @JsonProperty("address") String address,
+                                @JsonProperty("bank_id") String bankId,
+                                @JsonProperty("bank_id_code") String bankIdCode,
+                                @JsonProperty("name") String name) {
+            this.accountName = accountName;
+            this.accountNumber = accountNumber;
+            this.accountNumberCode = accountNumberCode;
+            this.accountType = accountType;
+            this.address = address;
+            this.bankId = bankId;
+            this.bankIdCode = bankIdCode;
+            this.name = name;
         }
 
-        public static class ChargesInformation {
+        public String getAccountName() {
+            return accountName;
+        }
 
-            @NotNull
-            @JsonProperty("bearer_code")
-            private String bearerCode;
-            @NotNull
-            @JsonProperty("sender_charges")
-            private List<SenderCharges> senderCharges;
-            @NotNull
-            @JsonProperty("receiver_charges_amount")
-            private String receiverChargesAmount;
-            @NotNull
-            @JsonProperty("receiver_charges_currency")
-            private String receiverChargesCurrency;
+        public String getAccountNumber() {
+            return accountNumber;
+        }
 
-            @JsonCreator
-            public ChargesInformation(@JsonProperty("bearer_code") String bearerCode,
-                                      @JsonProperty("sender_charges") List<SenderCharges> senderCharges,
-                                      @JsonProperty("receiver_charges_amount") String receiverChargesAmount,
-                                      @JsonProperty("receiver_charges_currency") String receiverChargesCurrency) {
-                this.bearerCode = bearerCode;
-                this.senderCharges = senderCharges;
-                this.receiverChargesAmount = receiverChargesAmount;
-                this.receiverChargesCurrency = receiverChargesCurrency;
-            }
+        public String getAccountNumberCode() {
+            return accountNumberCode;
+        }
 
-            public String getBearerCode() {
-                return bearerCode;
-            }
+        public int getAccountType() {
+            return accountType;
+        }
 
-            public List<SenderCharges> getSenderCharges() {
-                return senderCharges;
-            }
+        public String getAddress() {
+            return address;
+        }
 
-            public String getReceiverChargesAmount() {
-                return receiverChargesAmount;
-            }
+        public String getBankId() {
+            return bankId;
+        }
 
-            public String getReceiverChargesCurrency() {
-                return receiverChargesCurrency;
-            }
+        public String getBankIdCode() {
+            return bankIdCode;
+        }
 
-            @Override
-            public boolean equals(Object o) {
-                if (this == o) return true;
-                if (!(o instanceof ChargesInformation)) return false;
+        public String getName() {
+            return name;
+        }
 
-                ChargesInformation that = (ChargesInformation) o;
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof BeneficiaryParty)) return false;
 
-                if (!getBearerCode().equals(that.getBearerCode())) return false;
-                if (!getSenderCharges().equals(that.getSenderCharges())) return false;
-                if (!getReceiverChargesAmount().equals(that.getReceiverChargesAmount())) return false;
-                if (!getReceiverChargesCurrency().equals(that.getReceiverChargesCurrency())) return false;
+            BeneficiaryParty that = (BeneficiaryParty) o;
 
-                return true;
-            }
+            if (!getAccountName().equals(that.getAccountName())) return false;
+            if (!getAccountNumber().equals(that.getAccountNumber())) return false;
+            if (!getAccountNumberCode().equals(that.getAccountNumberCode())) return false;
+            if (getAccountType() != that.getAccountType()) return false;
+            if (!getAddress().equals(that.getAddress())) return false;
+            if (!getBankId().equals(that.getBankId())) return false;
+            if (!getBankIdCode().equals(that.getBankIdCode())) return false;
+            if (!getName().equals(that.getName())) return false;
+
+            return true;
+        }
+    }
+
+    public static class ChargesInformation {
+
+        @NotNull
+        @JsonProperty("bearer_code")
+        private String bearerCode;
+        @NotNull
+        @JsonProperty("sender_charges")
+        private List<SenderCharges> senderCharges;
+        @NotNull
+        @JsonProperty("receiver_charges_amount")
+        private String receiverChargesAmount;
+        @NotNull
+        @JsonProperty("receiver_charges_currency")
+        private String receiverChargesCurrency;
+
+        @JsonCreator
+        public ChargesInformation(@JsonProperty("bearer_code") String bearerCode,
+                                  @JsonProperty("sender_charges") List<SenderCharges> senderCharges,
+                                  @JsonProperty("receiver_charges_amount") String receiverChargesAmount,
+                                  @JsonProperty("receiver_charges_currency") String receiverChargesCurrency) {
+            this.bearerCode = bearerCode;
+            this.senderCharges = senderCharges;
+            this.receiverChargesAmount = receiverChargesAmount;
+            this.receiverChargesCurrency = receiverChargesCurrency;
+        }
+
+        public String getBearerCode() {
+            return bearerCode;
+        }
+
+        public List<SenderCharges> getSenderCharges() {
+            return senderCharges;
+        }
+
+        public String getReceiverChargesAmount() {
+            return receiverChargesAmount;
+        }
+
+        public String getReceiverChargesCurrency() {
+            return receiverChargesCurrency;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ChargesInformation)) return false;
+
+            ChargesInformation that = (ChargesInformation) o;
+
+            if (!getBearerCode().equals(that.getBearerCode())) return false;
+            if (!getSenderCharges().equals(that.getSenderCharges())) return false;
+            if (!getReceiverChargesAmount().equals(that.getReceiverChargesAmount())) return false;
+            if (!getReceiverChargesCurrency().equals(that.getReceiverChargesCurrency())) return false;
+
+            return true;
         }
     }
 

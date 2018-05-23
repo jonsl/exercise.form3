@@ -13,7 +13,7 @@ class PaymentsConfiguration extends Configuration {
     private DataSourceFactory database = new DataSourceFactory();
 
     @JsonProperty("database")
-    public DataSourceFactory getDataSourceFactory() {
+    DataSourceFactory getDataSourceFactory() {
         return database;
     }
 
