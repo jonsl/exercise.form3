@@ -7,7 +7,10 @@ import io.dropwizard.jackson.Jackson;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 @Path("/payments")
 @Consumes({MediaType.APPLICATION_JSON})
@@ -15,7 +18,8 @@ import javax.ws.rs.core.MediaType;
 public class PaymentResource {
 
     private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
-
+    @Context
+    protected UriInfo info;
     private PaymentDAO paymentDAO;
 
     public PaymentResource(PaymentDAO paymentDAO) {
@@ -24,12 +28,12 @@ public class PaymentResource {
 
     @GET
     @Path("/{id}")
-    public Payment fetch(@PathParam("id") String id) {
+    public List<Payment> fetch(@PathParam("id") String id) {
         return paymentDAO.fetchById(id);
     }
 
     @POST
-    public Payment create(@Valid Payment payment) {
+    public int create(@Valid Payment payment) {
         // Jackson serialization
         StringBuilder sb = new StringBuilder();
         try {
@@ -37,14 +41,12 @@ public class PaymentResource {
         } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
             System.err.println("JsonProcessingException: " + e.getMessage());
         }
-        paymentDAO.insert(payment, sb.toString());
-
-        return payment;
+        return paymentDAO.insert(payment, sb.toString());
     }
 
     @PUT
     @Path("/{id}")
-    public Payment update(@PathParam("id") String id, @Valid Payment payment) {
+    public int update(@PathParam("id") String id, @Valid Payment payment) {
         payment = payment.setId(id);
         // Jackson serialization
         StringBuilder sb = new StringBuilder();
@@ -53,14 +55,17 @@ public class PaymentResource {
         } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
             System.err.println("JsonProcessingException: " + e.getMessage());
         }
-        paymentDAO.update(payment, sb.toString());
-
-        return payment;
+        return paymentDAO.update(payment, sb.toString());
     }
 
     @DELETE
     @Path("/{id}")
-    public void delete(@PathParam("id") String id) {
-        paymentDAO.deleteById(id);
+    public int delete(@PathParam("id") String id) {
+        return paymentDAO.deleteById(id);
+    }
+
+    @GET
+    public List<Payment> fetchOffsetLimit(@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit) {
+        return paymentDAO.fetchOffsetLimit(offset, limit);
     }
 }

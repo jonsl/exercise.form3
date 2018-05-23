@@ -12,12 +12,8 @@ import java.util.List;
 
 @RegisterRowMapper(PaymentMapper.class)
 public interface PaymentDAO {
-
-//    @SqlQuery("select * from PAYMENT")
-//    List<{Payment> getAll();
-
     @SqlQuery("select * from PAYMENT where id = :id")
-    Payment fetchById(@Bind("id") String id);
+    List<Payment> fetchById(@Bind("id") String id);
 
     @SqlUpdate("insert into PAYMENT (type, id, version, organisation_id, attributes) values (:type, :id, :version, :organisationId, :attributes)")
     int insert(@BindBean Payment payment, @Bind("attributes") String attributes);
@@ -28,7 +24,6 @@ public interface PaymentDAO {
     @SqlUpdate("delete from PAYMENT where id = :id")
     int deleteById(@Bind("id") String id);
 
-//    @SqlUpdate("delete from PAYMENT where id = :id")
-//    int fetchOffsetCount(@Bind("id") int id);
-
+    @SqlQuery("select * from PAYMENT LIMIT :limit OFFSET :offset")
+    List<Payment> fetchOffsetLimit(@Bind("offset") Integer offset, @Bind("limit") Integer limit);
 }
