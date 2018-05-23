@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 class PaymentsConfiguration extends Configuration {
-
     @Valid
     @NotNull
     private DataSourceFactory database = new DataSourceFactory();
@@ -19,8 +18,7 @@ class PaymentsConfiguration extends Configuration {
     }
 
     @JsonProperty("database")
-    public void setDataSourceFactory(DataSourceFactory dataSourceFactory) {
-        this.database = dataSourceFactory;
+    public void setDataSourceFactory(DataSourceFactory factory) {
+        this.database = factory;
     }
-
 }

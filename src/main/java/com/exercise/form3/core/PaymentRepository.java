@@ -13,7 +13,7 @@ public interface PaymentRepository {
 
     Payment save(Payment payment);
 
-    Optional<Payment> update(Long id, Payment payment);
+    Optional<Payment> update(Long id, Payment paymentAttribute);
 
     void delete(Long id);
 

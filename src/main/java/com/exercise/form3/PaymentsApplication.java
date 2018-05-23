@@ -1,8 +1,10 @@
 package com.exercise.form3;
 
 import io.dropwizard.Application;
+import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.jdbi.v3.core.Jdbi;
 
 public class PaymentsApplication extends Application<PaymentsConfiguration> {
 
@@ -12,7 +14,7 @@ public class PaymentsApplication extends Application<PaymentsConfiguration> {
 
     @Override
     public String getName() {
-        return "Events";
+        return "Payments";
     }
 
     @Override
@@ -23,5 +25,8 @@ public class PaymentsApplication extends Application<PaymentsConfiguration> {
     @Override
     public void run(final PaymentsConfiguration configuration,
                     final Environment environment) {
+        final JdbiFactory factory = new JdbiFactory();
+//        final Jdbi jdbi = factory.build(environment, config.getDataSourceFactory(), "postgresql");
+//        environment.jersey().register(new UserResource(jdbi));
     }
 }
