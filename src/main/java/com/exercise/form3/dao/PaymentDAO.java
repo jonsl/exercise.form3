@@ -22,11 +22,11 @@ public interface PaymentDAO {
     @SqlUpdate("insert into PAYMENT (type, id, version, organisation_id, attributes) values (:type, :id, :version, :organisationId, :attributes)")
     int insert(@BindBean Payment payment, @Bind("attributes") String attributes);
 
-    @SqlUpdate("update PAYMENT set NAME = :name where ID = :id")
-    int update(@BindBean Payment payment);
+    @SqlUpdate("update PAYMENT set type = :type, id = :id, version = :version, organisation_id = :organisationId, attributes = :attributes where id = :id")
+    int update(@BindBean Payment payment, @Bind("attributes") String attributes);
 
     @SqlUpdate("delete from PAYMENT where id = :id")
-    int deleteById(@Bind("id") int id);
+    int deleteById(@Bind("id") String id);
 
 //    @SqlUpdate("delete from PAYMENT where id = :id")
 //    int fetchOffsetCount(@Bind("id") int id);

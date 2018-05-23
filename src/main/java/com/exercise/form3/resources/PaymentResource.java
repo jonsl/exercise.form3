@@ -9,8 +9,6 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
-
 @Path("/payments")
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
@@ -32,35 +30,37 @@ public class PaymentResource {
 
     @POST
     public Payment create(@Valid Payment payment) {
-
+        // Jackson serialization
         StringBuilder sb = new StringBuilder();
         try {
-
             sb.append(MAPPER.writeValueAsString(payment.getAttributes()));
-
         } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+            System.err.println("JsonProcessingException: " + e.getMessage());
         }
-
         paymentDAO.insert(payment, sb.toString());
 
         return payment;
     }
 
-//    @PUT
-//    @Path("/{id}")
-//    public Payment update(@PathParam("id") Integer id, @Valid Payment payment) {
-//        Payment updatePayment = payment;
-//        updatePayment.
-//
-//        paymentDAO.update(payment);
-//
-//        return updatePerson;
-//    }
+    @PUT
+    @Path("/{id}")
+    public Payment update(@PathParam("id") String id, @Valid Payment payment) {
+        payment = payment.setId(id);
+        // Jackson serialization
+        StringBuilder sb = new StringBuilder();
+        try {
+            sb.append(MAPPER.writeValueAsString(payment.getAttributes()));
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            System.err.println("JsonProcessingException: " + e.getMessage());
+        }
+        paymentDAO.update(payment, sb.toString());
+
+        return payment;
+    }
 
     @DELETE
     @Path("/{id}")
-    public void delete(@PathParam("id") Integer id) {
+    public void delete(@PathParam("id") String id) {
         paymentDAO.deleteById(id);
     }
 }

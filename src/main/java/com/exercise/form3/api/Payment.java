@@ -44,11 +44,11 @@ public class Payment {
         this.id = id;
         this.version = version;
         this.organisationId = organisationId;
-
+        // Jackson deserialization
         try {
             this.attributes = MAPPER.readValue(rawAttributes, PaymentAttribute.class);
         } catch (java.io.IOException e) {
-            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+            System.err.println("IOException: " + e.getMessage());
         }
     }
 
@@ -71,6 +71,11 @@ public class Payment {
 
     public String getId() {
         return id;
+    }
+
+    public Payment setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public int getVersion() {
