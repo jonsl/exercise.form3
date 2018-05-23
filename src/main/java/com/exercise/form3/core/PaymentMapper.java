@@ -9,23 +9,11 @@ import java.sql.SQLException;
 
 public class PaymentMapper implements RowMapper<Payment> {
     public Payment map(ResultSet resultSet, StatementContext statementContext) throws SQLException {
-//        Payment.BeneficiaryParty beneficiaryParty = new Payment.BeneficiaryParty(
-//                resultSet.getString("account_name"),
-//                resultSet.getString("account_number"),
-//                resultSet.getString("account_number_code"),
-//                resultSet.getInt("account_type"),
-//                resultSet.getString("address"),
-//                resultSet.getString("bank_id"),
-//                resultSet.getString("bank_id_code"),
-//                resultSet.getString("name")
-//                );
-
-
         return new Payment(
                 resultSet.getString("type"),
                 resultSet.getString("id"),
                 resultSet.getInt("version"),
-                resultSet.getString("organisation_id"));
-
+                resultSet.getString("organisation_id"),
+                resultSet.getString("attributes"));
     }
 }

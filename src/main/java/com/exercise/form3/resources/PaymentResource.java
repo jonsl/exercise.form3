@@ -2,15 +2,21 @@ package com.exercise.form3.resources;
 
 import com.exercise.form3.api.Payment;
 import com.exercise.form3.dao.PaymentDAO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.jackson.Jackson;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import static io.dropwizard.testing.FixtureHelpers.fixture;
+
 @Path("/payments")
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 public class PaymentResource {
+
+    private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
     private PaymentDAO paymentDAO;
 
@@ -26,7 +32,17 @@ public class PaymentResource {
 
     @POST
     public Payment create(@Valid Payment payment) {
-        paymentDAO.insert(payment);
+
+        StringBuilder sb = new StringBuilder();
+        try {
+
+            sb.append(MAPPER.writeValueAsString(payment.getAttributes()));
+
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        }
+
+        paymentDAO.insert(payment, sb.toString());
 
         return payment;
     }

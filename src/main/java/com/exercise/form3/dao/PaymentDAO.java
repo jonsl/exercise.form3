@@ -19,8 +19,8 @@ public interface PaymentDAO {
     @SqlQuery("select * from PAYMENT where id = :id")
     Payment fetchById(@Bind("id") String id);
 
-    @SqlUpdate("insert into PAYMENT (type, id, version, organisation_id) values (:type, :id, :version, :organisationId)")
-    int insert(@BindBean Payment payment);
+    @SqlUpdate("insert into PAYMENT (type, id, version, organisation_id, attributes) values (:type, :id, :version, :organisationId, :attributes)")
+    int insert(@BindBean Payment payment, @Bind("attributes") String attributes);
 
     @SqlUpdate("update PAYMENT set NAME = :name where ID = :id")
     int update(@BindBean Payment payment);

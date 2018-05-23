@@ -40,7 +40,7 @@ public class PaymentsApplication extends Application<PaymentsConfiguration> {
 
         try (Handle h = jdbi.open()) {
 
-            h.execute("create table if not exists PAYMENT (id_ INTEGER PRIMARY KEY AUTOINCREMENT, type varchar(100), id varchar(100), version int, organisation_id varchar(100))");
+            h.execute("create table if not exists PAYMENT (id_ INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, id TEXT, version INTEGER, organisation_id TEXT, attributes TEXT)");
 
         }
     }

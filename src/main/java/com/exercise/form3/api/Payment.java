@@ -2,6 +2,8 @@ package com.exercise.form3.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dropwizard.jackson.Jackson;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
  */
 
 public class Payment {
+
+    private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
     @NotNull
     @JsonProperty("type")
@@ -23,7 +27,7 @@ public class Payment {
     @NotNull
     @JsonProperty("organisation_id")
     private String organisationId;
-    //    @NotNull
+    @NotNull
     @JsonProperty("attributes")
     private PaymentAttribute attributes;
 
@@ -31,17 +35,34 @@ public class Payment {
         // Jackson deserialization
     }
 
-    @JsonCreator
-    public Payment(@JsonProperty("type") String type,
-                   @JsonProperty("id") String id,
-                   @JsonProperty("version") int version,
-                   @JsonProperty("organisation_id") String organisationId) {
-//                   @JsonProperty("attributes") PaymentAttribute attributes) {
+    public Payment(String type,
+                   String id,
+                   int version,
+                   String organisationId,
+                   String rawAttributes) {
         this.type = type;
         this.id = id;
         this.version = version;
         this.organisationId = organisationId;
-//        this.attributes = attributes;
+
+        try {
+            this.attributes = MAPPER.readValue(rawAttributes, PaymentAttribute.class);
+        } catch (java.io.IOException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        }
+    }
+
+    @JsonCreator
+    public Payment(@JsonProperty("type") String type,
+                   @JsonProperty("id") String id,
+                   @JsonProperty("version") int version,
+                   @JsonProperty("organisation_id") String organisationId,
+                   @JsonProperty("attributes") PaymentAttribute attributes) {
+        this.type = type;
+        this.id = id;
+        this.version = version;
+        this.organisationId = organisationId;
+        this.attributes = attributes;
     }
 
     public String getType() {
