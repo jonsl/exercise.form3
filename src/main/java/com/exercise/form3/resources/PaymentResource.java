@@ -4,11 +4,13 @@ import com.exercise.form3.api.Payment;
 import com.exercise.form3.dao.PaymentDAO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
+import jersey.repackaged.com.google.common.base.Optional;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
@@ -28,12 +30,17 @@ public class PaymentResource {
 
     @GET
     @Path("/{id}")
-    public List<Payment> fetch(@PathParam("id") String id) {
-        return paymentDAO.fetchById(id);
+    public Response fetch(@PathParam("id") String id) {
+
+        Payment fetchedPayment = paymentDAO.fetchById(id);
+        if (fetchedPayment == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(fetchedPayment).build();
     }
 
     @POST
-    public int create(@Valid Payment payment) {
+    public Response create(@Valid Payment payment) {
         // Jackson serialization
         StringBuilder sb = new StringBuilder();
         try {
@@ -41,12 +48,15 @@ public class PaymentResource {
         } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
             System.err.println("JsonProcessingException: " + e.getMessage());
         }
-        return paymentDAO.insert(payment, sb.toString());
+        if (paymentDAO.insert(payment, sb.toString()) <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.ok(payment).build();
     }
 
     @PUT
     @Path("/{id}")
-    public int update(@PathParam("id") String id, @Valid Payment payment) {
+    public Response update(@PathParam("id") String id, @Valid Payment payment) {
         payment = payment.setId(id);
         // Jackson serialization
         StringBuilder sb = new StringBuilder();
@@ -55,17 +65,27 @@ public class PaymentResource {
         } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
             System.err.println("JsonProcessingException: " + e.getMessage());
         }
-        return paymentDAO.update(payment, sb.toString());
+        if (paymentDAO.update(payment, sb.toString()) <= 0) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(payment).build();
     }
 
     @DELETE
     @Path("/{id}")
-    public int delete(@PathParam("id") String id) {
-        return paymentDAO.deleteById(id);
+    public Response delete(@PathParam("id") String id) {
+        if (paymentDAO.deleteById(id) <= 0) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(id).build();
     }
 
     @GET
-    public List<Payment> fetchOffsetLimit(@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit) {
-        return paymentDAO.fetchOffsetLimit(offset, limit);
+    public Response fetchOffsetLimit(@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit) {
+        List<Payment> paymentList = paymentDAO.fetchOffsetLimit(offset, limit);
+        if (paymentList.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(paymentList).build();
     }
 }

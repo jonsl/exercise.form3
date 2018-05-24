@@ -17,6 +17,9 @@ import java.util.Set;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Unit tests for {@link Payment}
+ */
 public class PaymentTests {
 
     private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
@@ -38,7 +41,6 @@ public class PaymentTests {
                 "4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43",
                 0,
                 "743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb",
-
                 new Payment.PaymentAttribute(
                         "100.21",
                         new Payment.BeneficiaryParty("W Owens", "31926819", "BBAN", 0, "1 The Beneficiary Localtown SE2", "403000", "GBDSC", "Wilfred Jeremiah Owens"),
