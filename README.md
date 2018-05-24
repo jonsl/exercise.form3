@@ -47,5 +47,7 @@ jar/sqlite-jdbc-3.8.10.1.jar
 $ sudo apt install gradle
 $ gradle wrapper
 $ gradle build
-$ gradle inigradle run -PappArgs="['server', 'configuration.yml']"
+$ gradle run -PappArgs="['server', 'configuration.yml']"
 ```
+### Database
+I have used SQLite for the back-end database. This database is named dev.db, located in the project root, and is created on run if non-existent. I used http://sqlitebrowser.org/ to evaluate the database contents.
