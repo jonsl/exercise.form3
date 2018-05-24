@@ -23,8 +23,7 @@ java version "1.8.0_171"
 Java(TM) SE Runtime Environment (build 1.8.0_171-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.171-b11, mixed mode)
 ```
-### Open Source
-
+### Open Source Libraries
 ```
 'io.dropwizard:dropwizard-core:1.1.0'
 'io.dropwizard:dropwizard-jdbi3:1.3.0'
@@ -36,8 +35,6 @@ group: 'junit', name: 'junit', version: '4.12'
 group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
 group: 'org.glassfish.jersey.test-framework.providers', name: 'jersey-test-framework-provider-grizzly2', version: '2.27'
 ```
-
-
 ### Dependencies (Jar)
 
 The following Jar dependencies must be loaded at runtime:
