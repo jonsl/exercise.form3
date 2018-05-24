@@ -41,3 +41,10 @@ The following Jar dependencies must be loaded at runtime:
 ```
 jar/sqlite-jdbc-3.8.10.1.jar
 ```
+## Command-line build
+```
+$ sudo apt install gradle
+$ gradle wrapper
+$ gradle build
+$ gradle inigradle run -PappArgs="['server', 'configuration.yml']"t
+```

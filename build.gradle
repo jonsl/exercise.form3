@@ -2,6 +2,10 @@ plugins {
     id 'java'
 }
 
+apply plugin: 'application'
+
+mainClassName = "com.exercise.form3.PaymentsApplication"
+
 group 'com.exercise.form3'
 version '1.0-SNAPSHOT'
 
@@ -21,4 +25,25 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
     testCompile group: 'org.glassfish.jersey.test-framework.providers', name: 'jersey-test-framework-provider-grizzly2', version: '2.27'
+    compile files('jar/sqlite-jdbc-3.8.10.1.jar')
+}
+
+sourceSets {
+    main.java.srcDirs = ["src/main/java"]
+    main.resources.srcDirs = ["src/main/resources"]
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.exercise.form3.PaymentsApplication'
+        )
+    }
+}
+
+run {
+    if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
 }
