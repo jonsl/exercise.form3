@@ -1,6 +1,7 @@
 # exercise.form3
 Coding exercise for back-end developer.
 ## Design location
+The design document is located:
 ```
 doc/form3-coding-exercise-design.pdf
 ```
@@ -41,10 +42,10 @@ The following Jar dependencies must be loaded at runtime:
 ```
 jar/sqlite-jdbc-3.8.10.1.jar
 ```
-## Command-line build
+### Command-line build
 ```
 $ sudo apt install gradle
 $ gradle wrapper
 $ gradle build
-$ gradle inigradle run -PappArgs="['server', 'configuration.yml']"t
+$ gradle inigradle run -PappArgs="['server', 'configuration.yml']"
 ```
