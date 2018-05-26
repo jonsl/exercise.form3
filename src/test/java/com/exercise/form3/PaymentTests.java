@@ -34,9 +34,8 @@ public class PaymentTests {
         validator = factory.getValidator();
     }
 
-    private static Payment getPayment() {
+    static Payment getTestPayment() {
         return new Payment(
-
                 "Payment",
                 "4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43",
                 0,
@@ -71,13 +70,13 @@ public class PaymentTests {
 
     @Test
     public void serializesToJson() throws Exception {
-        final Payment payment = getPayment();
+        final Payment payment = getTestPayment();
         assertEquals(fixture("fixtures/payment.json"), MAPPER.writeValueAsString(payment));
     }
 
     @Test
     public void deserializesFromJSON() throws Exception {
-        final Payment payment = getPayment();
+        final Payment payment = getTestPayment();
         assertEquals(payment, MAPPER.readValue(fixture("fixtures/payment.json"), Payment.class));
     }
 

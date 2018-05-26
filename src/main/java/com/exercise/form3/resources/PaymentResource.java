@@ -4,7 +4,7 @@ import com.exercise.form3.api.Payment;
 import com.exercise.form3.dao.PaymentDAO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.jackson.Jackson;
-import jersey.repackaged.com.google.common.base.Optional;
+//import jersey.repackaged.com.google.common.base.Optional;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -20,8 +20,7 @@ import java.util.List;
 public class PaymentResource {
 
     private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
-    @Context
-    protected UriInfo info;
+
     private PaymentDAO paymentDAO;
 
     public PaymentResource(PaymentDAO paymentDAO) {
@@ -31,7 +30,6 @@ public class PaymentResource {
     @GET
     @Path("/{id}")
     public Response fetch(@PathParam("id") String id) {
-
         Payment fetchedPayment = paymentDAO.fetchById(id);
         if (fetchedPayment == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
