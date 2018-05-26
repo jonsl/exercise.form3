@@ -65,6 +65,16 @@ public class Payment {
         this.attributes = attributes;
     }
 
+    public static String getJson(Payment payment) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            sb.append(MAPPER.writeValueAsString(payment));
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            System.err.println("JsonProcessingException: " + e.getMessage());
+        }
+        return sb.toString();
+    }
+
     public String getType() {
         return type;
     }
@@ -195,6 +205,16 @@ public class Payment {
             this.schemePaymentSubType = schemePaymentSubType;
             this.schemePaymentType = schemePaymentType;
             this.sponsorParty = sponsorParty;
+        }
+
+        public static String getJson(PaymentAttribute paymentAttribute) {
+            StringBuilder sb = new StringBuilder();
+            try {
+                sb.append(MAPPER.writeValueAsString(paymentAttribute));
+            } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+                System.err.println("JsonProcessingException: " + e.getMessage());
+            }
+            return sb.toString();
         }
 
         public String getAmount() {

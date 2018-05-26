@@ -39,14 +39,7 @@ public class PaymentResource {
 
     @POST
     public Response create(@Valid Payment payment) {
-        // Jackson serialization
-        StringBuilder sb = new StringBuilder();
-        try {
-            sb.append(MAPPER.writeValueAsString(payment.getAttributes()));
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            System.err.println("JsonProcessingException: " + e.getMessage());
-        }
-        if (paymentDAO.insert(payment, sb.toString()) <= 0) {
+        if (paymentDAO.insert(payment, Payment.PaymentAttribute.getJson(payment.getAttributes())) <= 0) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.ok(payment).build();

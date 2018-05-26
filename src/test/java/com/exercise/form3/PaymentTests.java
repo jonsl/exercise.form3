@@ -34,7 +34,7 @@ public class PaymentTests {
         validator = factory.getValidator();
     }
 
-    static Payment getTestPayment() {
+    static Payment getValidPayment_1() {
         return new Payment(
                 "Payment",
                 "4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43",
@@ -42,18 +42,42 @@ public class PaymentTests {
                 "743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb",
                 new Payment.PaymentAttribute(
                         "100.21",
-                        new Payment.BeneficiaryParty("W Owens", "31926819", "BBAN", 0, "1 The Beneficiary Localtown SE2", "403000", "GBDSC", "Wilfred Jeremiah Owens"),
+                        new Payment.BeneficiaryParty(
+                                "W Owens",
+                                "31926819",
+                                "BBAN",
+                                0,
+                                "1 The Beneficiary Localtown SE2",
+                                "403000",
+                                "GBDSC",
+                                "Wilfred Jeremiah Owens"),
                         new Payment.ChargesInformation(
                                 "SHAR",
                                 new ArrayList<>(Arrays.asList(
-                                        new Payment.SenderCharges("5.00", "GBP"),
-                                        new Payment.SenderCharges("10.00", "USD")
+                                        new Payment.SenderCharges(
+                                                "5.00",
+                                                "GBP"),
+                                        new Payment.SenderCharges(
+                                                "10.00",
+                                                "USD")
                                 )),
-                                "1.00", "USD"),
+                                "1.00",
+                                "USD"),
                         "GBP",
-                        new Payment.DebtorParty("EJ Brown Black", "GB29XABC10161234567801", "IBAN", "10 Debtor Crescent Sourcetown NE1", "203301", "GBDSC", "Emelia Jane Brown"),
+                        new Payment.DebtorParty(
+                                "EJ Brown Black",
+                                "GB29XABC10161234567801",
+                                "IBAN",
+                                "10 Debtor Crescent Sourcetown NE1",
+                                "203301",
+                                "GBDSC",
+                                "Emelia Jane Brown"),
                         "Wil piano Jan",
-                        new Payment.Fx("FX123", "2.00000", "200.42", "USD"),
+                        new Payment.Fx(
+                                "FX123",
+                                "2.00000",
+                                "200.42",
+                                "USD"),
                         "1002001",
                         "123456789012345678",
                         "Paying for goods/services",
@@ -63,21 +87,106 @@ public class PaymentTests {
                         "Payment for Em's piano lessons",
                         "InternetBanking",
                         "ImmediatePayment",
-                        new Payment.SponsorParty("56781234", "123123", "GBDSC")
+                        new Payment.SponsorParty(
+                                "56781234",
+                                "123123",
+                                "GBDSC")
                 )
         );
     }
 
-    @Test
-    public void serializesToJson() throws Exception {
-        final Payment payment = getTestPayment();
-        assertEquals(fixture("fixtures/payment.json"), MAPPER.writeValueAsString(payment));
+    static Payment getValidPayment_2() {
+        return new Payment(
+                "Payment",
+                "09a8fe0d-e239-4aff-8098-7923eadd0b98",
+                0,
+                "743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb",
+                new Payment.PaymentAttribute(
+                        "100.21",
+                        new Payment.BeneficiaryParty(
+                                "W Owens",
+                                "31926819",
+                                "BBAN",
+                                0,
+                                "1 The Beneficiary Localtown SE2",
+                                "403000",
+                                "GBDSC",
+                                "Wilfred Jeremiah Owens"),
+                        new Payment.ChargesInformation(
+                                "SHAR",
+                                new ArrayList<>(Arrays.asList(
+                                        new Payment.SenderCharges(
+                                                "5.00",
+                                                "GBP"),
+                                        new Payment.SenderCharges(
+                                                "10.00",
+                                                "USD")
+                                )),
+                                "1.00",
+                                "USD"),
+                        "GBP",
+                        new Payment.DebtorParty(
+                                "EJ Brown Black",
+                                "GB29XABC10161234567801",
+                                "IBAN",
+                                "10 Debtor Crescent Sourcetown NE1",
+                                "203301",
+                                "GBDSC",
+                                "Emelia Jane Brown"),
+                        "Wil piano Jan",
+                        new Payment.Fx(
+                                "FX123",
+                                "2.00000",
+                                "200.42",
+                                "USD"),
+                        "1002001",
+                        "123456789012345678",
+                        "Paying for goods/services",
+                        "FPS",
+                        "Credit",
+                        "2017-01-18",
+                        "Payment for Em's piano lessons",
+                        "InternetBanking",
+                        "ImmediatePayment",
+                        new Payment.SponsorParty(
+                                "56781234",
+                                "123123",
+                                "GBDSC")
+                )
+        );
+    }
+
+    static Payment getInvalidPayment() {
+        return new Payment(
+                "Payment",
+                "09a8fe0d-e239-4aff-8098-7923eadd0b98",
+                0,
+                "743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb",
+                "");
     }
 
     @Test
-    public void deserializesFromJSON() throws Exception {
-        final Payment payment = getTestPayment();
-        assertEquals(payment, MAPPER.readValue(fixture("fixtures/payment.json"), Payment.class));
+    public void serializesToJson_1() throws Exception {
+        final Payment payment = getValidPayment_1();
+        assertEquals(fixture("fixtures/payment_1.json"), MAPPER.writeValueAsString(payment));
+    }
+
+    @Test
+    public void deserializesFromJson_1() throws Exception {
+        final Payment payment = getValidPayment_1();
+        assertEquals(payment, MAPPER.readValue(fixture("fixtures/payment_1.json"), Payment.class));
+    }
+
+    @Test
+    public void serializesToJson_2() throws Exception {
+        final Payment payment = getValidPayment_2();
+        assertEquals(fixture("fixtures/payment_2.json"), MAPPER.writeValueAsString(payment));
+    }
+
+    @Test
+    public void deserializesFromJson_2() throws Exception {
+        final Payment payment = getValidPayment_2();
+        assertEquals(payment, MAPPER.readValue(fixture("fixtures/payment_2.json"), Payment.class));
     }
 
     // Should be replaced with individual class field validator tests
