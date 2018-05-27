@@ -24,9 +24,9 @@ Version: 1803
 OS build: 17134.81
 System type: 64-bit operating system, x64-based processor
 ```
-### Java
+### Java version
 ```
-java version "1.8.0_171"
+java version "1.8.0_172"
 Java(TM) SE Runtime Environment (build 1.8.0_171-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.171-b11, mixed mode)
 ```
@@ -40,12 +40,27 @@ testCompile group: 'io.dropwizard', name: 'dropwizard-testing', version: dropwiz
 testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
 testCompile group: 'junit', name: 'junit', version: junitVersion
 ```
-### Command-line build
+## Command-line
+Following are instructions how to build and run the server.
+### Common
+Download Java JDK 1.8.0_172: 
+```
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+```
+### ubuntu
 ```
 $ sudo apt install gradle
-$ ./gradlew wrapper
+$ git clone https://github.com/jonsl/exercise.form3.git
+$ cd exercise.form3/
 $ ./gradlew build
 $ ./gradlew run
 ```
-### Database
-I have used SQLite for the back-end database. This database is named dev.db, located in the project root, and is created on run if non-existent. I used http://sqlitebrowser.org/ to evaluate the database contents.
+### windows
+```
+> git clone https://github.com/jonsl/exercise.form3.git
+> cd exercise.form3/
+> gradlew build
+> gradlew run
+```
+## Database
+I have used SQLite for the back-end database. This database is named dev.db located in the project root, and is created on run if non-existent. I used http://sqlitebrowser.org/ to evaluate the database contents.
