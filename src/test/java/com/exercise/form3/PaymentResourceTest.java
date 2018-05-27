@@ -3,6 +3,8 @@ package com.exercise.form3;
 import com.exercise.form3.api.Payment;
 import com.exercise.form3.dao.PaymentDAO;
 import com.exercise.form3.resources.PaymentResource;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.After;
 import org.junit.Before;
@@ -19,8 +21,7 @@ import java.util.List;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static junit.framework.TestCase.assertNull;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -71,7 +72,7 @@ public class PaymentResourceTest {
 
         assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 
-        assertThat(response.readEntity(String.class), is(fixture("fixtures/payment_1.json")));
+        assertTrue(comarePaymentResponse(response.readEntity(String.class), fixture("fixtures/payment_1.json")));
 
         verify(dao).fetchById(KNOWN_PAYMENT_ID_1);
     }
@@ -95,11 +96,11 @@ public class PaymentResourceTest {
         Response response = resources.client()
                 .target("/payments")
                 .request()
-                .post(Entity.entity(Payment.getJson(payment_1), MediaType.APPLICATION_JSON));
+                .post(Entity.entity(Payment.toJson(payment_1), MediaType.APPLICATION_JSON));
 
         assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 
-        assertThat(response.readEntity(String.class), is(fixture("fixtures/payment_1.json")));
+        assertTrue(comarePaymentResponse(response.readEntity(String.class), fixture("fixtures/payment_1.json")));
 
         verify(dao).insert(payment_1, Payment.PaymentAttribute.getJson(payment_1.getAttributes()));
     }
@@ -109,7 +110,7 @@ public class PaymentResourceTest {
         Response response = resources.client()
                 .target("/payments")
                 .request()
-                .post(Entity.entity(Payment.getJson(invalidPayment), MediaType.APPLICATION_JSON));
+                .post(Entity.entity(Payment.toJson(invalidPayment), MediaType.APPLICATION_JSON));
 
         assertThat(response.getStatus(), is(422));  // Unprocessable Entity
 
@@ -121,11 +122,11 @@ public class PaymentResourceTest {
         Response response = resources.client()
                 .target("/payments/" + KNOWN_PAYMENT_ID_2)
                 .request()
-                .put(Entity.entity(Payment.getJson(payment_2), MediaType.APPLICATION_JSON));
+                .put(Entity.entity(Payment.toJson(payment_2), MediaType.APPLICATION_JSON));
 
         assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 
-        assertThat(response.readEntity(String.class), is(fixture("fixtures/payment_2.json")));
+        assertTrue(comarePaymentResponse(response.readEntity(String.class), fixture("fixtures/payment_2.json")));
 
         verify(dao).update(payment_2, Payment.PaymentAttribute.getJson(payment_2.getAttributes()));
     }
@@ -135,7 +136,7 @@ public class PaymentResourceTest {
         Response response = resources.client()
                 .target("/payments/" + KNOWN_PAYMENT_ID_1)
                 .request()
-                .put(Entity.entity(Payment.getJson(payment_1), MediaType.APPLICATION_JSON));
+                .put(Entity.entity(Payment.toJson(payment_1), MediaType.APPLICATION_JSON));
 
         assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
 
@@ -153,7 +154,7 @@ public class PaymentResourceTest {
 
         assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 
-        assertEquals(fixture("fixtures/payment_1.json"), response.readEntity(String.class));
+        assertTrue(comarePaymentResponse(response.readEntity(String.class), fixture("fixtures/payment_1.json")));
     }
 
     @Test
@@ -177,11 +178,17 @@ public class PaymentResourceTest {
 
         assertThat(response.getStatus(), is(Response.Status.OK.getStatusCode()));
 
-        List<Payment> payments = response.readEntity(new GenericType<List<Payment>>() {});
+        String responseJson = response.readEntity(String.class);
 
-        assertThat(payments.size(), is(1));
+        List<Payment> payments = getPayments(responseJson);
 
-        assertEquals(fixture("fixtures/payment_2.json"), Payment.getJson(payments.get(0)));
+        assertNotNull(payments);
+
+        assertEquals(payments.size(), 1);
+
+        String paymentJson = Payment.toJson(payments.get(0));
+
+        assertEquals(paymentJson, fixture("fixtures/payment_2.json"));
 
         verify(dao).fetchOffsetLimit(1, 1);
     }
@@ -195,10 +202,47 @@ public class PaymentResourceTest {
 
         assertThat(response.getStatus(), is(Response.Status.NOT_FOUND.getStatusCode()));
 
-        List<Payment> payments = response.readEntity(new GenericType<List<Payment>>() {});
+        String responseJson = response.readEntity(String.class);
 
-        assertNull(payments);
+        assertTrue(responseJson.isEmpty());
 
         verify(dao).fetchOffsetLimit(2, 1);
+    }
+
+    private boolean comarePaymentResponse(String paymentResponse, String paymentJson) {
+        // only compare the payment section 'data' array node
+        try {
+            final JsonNode arrNode = new ObjectMapper().readTree(paymentResponse).get("data");
+            if (arrNode.isArray()) {
+                for (final JsonNode objNode : arrNode) {
+                    if (!objNode.toString().equals(paymentJson)) {
+                        return false;
+                    }
+                }
+            }
+        } catch (java.io.IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+        }
+        return true;
+    }
+
+    private List<Payment> getPayments(String paymentResponse) {
+        // only compare the payment section 'data' array node
+        try {
+            ArrayList<Payment> payments = new ArrayList<Payment>();
+            final JsonNode arrNode = new ObjectMapper().readTree(paymentResponse).get("data");
+            if (arrNode.isArray()) {
+                for (final JsonNode objNode : arrNode) {
+                    Payment payment = Payment.fromJson(objNode.toString());
+                    if (payment != null) {
+                        payments.add(payment);
+                    }
+                }
+            }
+            return payments;
+        } catch (java.io.IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+            return null;
+        }
     }
 }

@@ -2,9 +2,6 @@ package com.exercise.form3.resources;
 
 import com.exercise.form3.api.Payment;
 import com.exercise.form3.dao.PaymentDAO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dropwizard.jackson.Jackson;
-//import jersey.repackaged.com.google.common.base.Optional;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -12,14 +9,19 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.util.List;
+import java.util.StringJoiner;
+
+//import jersey.repackaged.com.google.common.base.Optional;
 
 @Path("/payments")
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 public class PaymentResource {
 
-    private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
+    @Context
+    UriInfo uriInfo;
 
     private PaymentDAO paymentDAO;
 
@@ -27,14 +29,18 @@ public class PaymentResource {
         this.paymentDAO = paymentDAO;
     }
 
+    public URI getUri() {
+        return uriInfo.getBaseUriBuilder().path(PaymentResource.class).build();
+    }
+
     @GET
-    @Path("/{id}")
-    public Response fetch(@PathParam("id") String id) {
+    @Path("/{paymentId}")
+    public Response fetch(@PathParam("paymentId") String id) {
         Payment fetchedPayment = paymentDAO.fetchById(id);
         if (fetchedPayment == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(fetchedPayment).build();
+        return Response.ok(getFullJsonResponse(fetchedPayment)).build();
     }
 
     @POST
@@ -42,29 +48,23 @@ public class PaymentResource {
         if (paymentDAO.insert(payment, Payment.PaymentAttribute.getJson(payment.getAttributes())) <= 0) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.ok(payment).build();
+        return Response.ok(getFullJsonResponse(payment)).build();
     }
 
     @PUT
-    @Path("/{id}")
-    public Response update(@PathParam("id") String id, @Valid Payment payment) {
+    @Path("/{paymentId}")
+    public Response update(@PathParam("paymentId") String id, @Valid Payment payment) {
         payment = payment.setId(id);
-        // Jackson serialization
-        StringBuilder sb = new StringBuilder();
-        try {
-            sb.append(MAPPER.writeValueAsString(payment.getAttributes()));
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            System.err.println("JsonProcessingException: " + e.getMessage());
-        }
-        if (paymentDAO.update(payment, sb.toString()) <= 0) {
+        String attributesJson = Payment.PaymentAttribute.getJson(payment.getAttributes());
+        if (paymentDAO.update(payment, attributesJson) <= 0) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(payment).build();
+        return Response.ok(getFullJsonResponse(payment)).build();
     }
 
     @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") String id) {
+    @Path("/{paymentId}")
+    public Response delete(@PathParam("paymentId") String id) {
         if (paymentDAO.deleteById(id) <= 0) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -77,6 +77,25 @@ public class PaymentResource {
         if (paymentList.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(paymentList).build();
+        return Response.ok(getFullJsonResponse(paymentList)).build();
+    }
+
+    private String getFullJsonResponse(Payment payment) {
+        return "{\"data\":["
+                + Payment.toJson(payment)
+                + "]," +
+                "\"links\":{\"self\":\"" + getUri().toString() + "\"}}";
+    }
+
+    private String getFullJsonResponse(List<Payment> payments) {
+        StringBuilder sb = new StringBuilder("{\"data\":[");
+
+        StringJoiner joiner = new StringJoiner(",");
+        for (Payment payment : payments) {
+            joiner.add(Payment.toJson(payment));
+        }
+        sb.append(joiner.toString());
+
+        return sb.append("],\"links\":{\"self\":\"").append(getUri().toString()).append("\"}}").toString();
     }
 }

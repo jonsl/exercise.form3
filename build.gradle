@@ -1,8 +1,6 @@
-plugins {
-    id 'java'
-}
 
 apply plugin: 'application'
+apply plugin: 'java'
 
 mainClassName = "com.exercise.form3.PaymentsApplication"
 
@@ -10,6 +8,7 @@ group 'com.exercise.form3'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 // Set our project variables
 project.ext {
@@ -35,8 +34,8 @@ dependencies {
 }
 
 sourceSets {
-    main.java.srcDirs = ["src/main/java"]
-    main.resources.srcDirs = ["src/main/resources"]
+    main.java.srcDirs = ['src/main/java']
+    main.resources.srcDirs = ['src/main/resources']
 }
 
 jar {

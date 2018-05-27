@@ -45,10 +45,12 @@ public class Payment {
         this.version = version;
         this.organisationId = organisationId;
         // Jackson deserialization
-        try {
-            this.attributes = MAPPER.readValue(rawAttributes, PaymentAttribute.class);
-        } catch (java.io.IOException e) {
-            System.err.println("IOException: " + e.getMessage());
+        if (!rawAttributes.isEmpty()) {
+            try {
+                this.attributes = MAPPER.readValue(rawAttributes, PaymentAttribute.class);
+            } catch (java.io.IOException e) {
+                System.err.println("IOException: " + e.getMessage());
+            }
         }
     }
 
@@ -65,7 +67,7 @@ public class Payment {
         this.attributes = attributes;
     }
 
-    public static String getJson(Payment payment) {
+    public static String toJson(Payment payment) {
         StringBuilder sb = new StringBuilder();
         try {
             sb.append(MAPPER.writeValueAsString(payment));
@@ -73,6 +75,15 @@ public class Payment {
             System.err.println("JsonProcessingException: " + e.getMessage());
         }
         return sb.toString();
+    }
+
+    public static Payment fromJson(String json) {
+        try {
+            return MAPPER.readValue(json, Payment.class);
+        } catch (java.io.IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+        }
+        return null;
     }
 
     public String getType() {
