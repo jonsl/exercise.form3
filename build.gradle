@@ -10,6 +10,10 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+task wrapper(type: Wrapper) {
+   gradleVersion = '3.0' //version required
+}
+
 // Set our project variables
 project.ext {
     dropwizardCoreVersion = '1.3.2'
