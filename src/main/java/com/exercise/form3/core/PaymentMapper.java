@@ -7,6 +7,11 @@ import org.jdbi.v3.core.statement.StatementContext;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * RowMapper is a functional interface, which maps the current row of a JDBC ResultSet to a mapped type.
+ * Row mappers are invoked once for each row in the result set.
+ */
+
 public class PaymentMapper implements RowMapper<Payment> {
     public Payment map(ResultSet resultSet, StatementContext statementContext) throws SQLException {
         return new Payment(

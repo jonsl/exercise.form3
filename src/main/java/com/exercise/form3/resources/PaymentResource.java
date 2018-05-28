@@ -13,7 +13,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.StringJoiner;
 
-//import jersey.repackaged.com.google.common.base.Optional;
+/**
+ * model the Payment resources exposed in RESTful API using Jersey
+ */
 
 @Path("/payments")
 @Consumes({MediaType.APPLICATION_JSON})

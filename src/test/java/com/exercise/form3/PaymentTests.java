@@ -18,8 +18,9 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Unit tests for {@link Payment}
+ * payment representation tests: {@link Payment}
  */
+
 public class PaymentTests {
 
     private static final ObjectMapper MAPPER = Jackson.newObjectMapper();

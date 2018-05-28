@@ -9,6 +9,10 @@ import io.dropwizard.setup.Environment;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 
+/**
+ * main entry point into a Dropwizard application
+ */
+
 public class PaymentsApplication extends Application<PaymentsConfiguration> {
 
     public static void main(final String[] args) throws Exception {

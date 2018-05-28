@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Payment domain object representation
+ * Payment domain object representation, uses Jackson to map to JSON
  */
 
 public class Payment {

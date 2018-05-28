@@ -2,7 +2,6 @@ package com.exercise.form3.dao;
 
 import com.exercise.form3.api.Payment;
 import com.exercise.form3.core.PaymentMapper;
-//import jersey.repackaged.com.google.common.base.Optional;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;

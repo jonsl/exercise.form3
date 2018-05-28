@@ -18,14 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static junit.framework.TestCase.assertNull;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for {@link com.exercise.form3.resources.PaymentResource}.
+ * full-stack approach to payment resource : {@link PaymentResource}
  */
+
 public class PaymentResourceTest {
     private static final PaymentDAO dao = mock(PaymentDAO.class);
     @ClassRule
@@ -226,7 +226,7 @@ public class PaymentResourceTest {
     }
 
     private List<Payment> getPayments(String paymentResponse) {
-        // only compare the payment section 'data' array node
+        // only get payments from 'data' array node
         try {
             ArrayList<Payment> payments = new ArrayList<Payment>();
             final JsonNode arrNode = new ObjectMapper().readTree(paymentResponse).get("data");
