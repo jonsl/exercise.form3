@@ -14,6 +14,6 @@ public class PaymentMapper implements RowMapper<Payment> {
                 resultSet.getString("id"),
                 resultSet.getInt("version"),
                 resultSet.getString("organisation_id"),
-                resultSet.getString("attributes"));
+                Payment.PaymentAttribute.fromJson(resultSet.getString("attributes")));
     }
 }

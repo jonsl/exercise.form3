@@ -162,7 +162,7 @@ public class PaymentTests {
                 "09a8fe0d-e239-4aff-8098-7923eadd0b98",
                 0,
                 "743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb",
-                "");
+                null);
     }
 
     @Test

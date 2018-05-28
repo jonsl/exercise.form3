@@ -45,7 +45,7 @@ public class PaymentResource {
 
     @POST
     public Response create(@Valid Payment payment) {
-        if (paymentDAO.insert(payment, Payment.PaymentAttribute.getJson(payment.getAttributes())) <= 0) {
+        if (paymentDAO.insert(payment, Payment.PaymentAttribute.toJson(payment.getAttributes())) <= 0) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.ok(getFullJsonResponse(payment)).build();
@@ -55,7 +55,7 @@ public class PaymentResource {
     @Path("/{paymentId}")
     public Response update(@PathParam("paymentId") String id, @Valid Payment payment) {
         payment = payment.setId(id);
-        String attributesJson = Payment.PaymentAttribute.getJson(payment.getAttributes());
+        String attributesJson = Payment.PaymentAttribute.toJson(payment.getAttributes());
         if (paymentDAO.update(payment, attributesJson) <= 0) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

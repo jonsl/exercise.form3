@@ -12,7 +12,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -45,8 +44,8 @@ public class PaymentResourceTest {
     public void setup() {
 
         when(dao.fetchById(eq(KNOWN_PAYMENT_ID_1))).thenReturn(payment_1);
-        when(dao.insert(payment_1, Payment.PaymentAttribute.getJson(payment_1.getAttributes()))).thenReturn(1);
-        when(dao.update(payment_2, Payment.PaymentAttribute.getJson(payment_2.getAttributes()))).thenReturn(1);
+        when(dao.insert(payment_1, Payment.PaymentAttribute.toJson(payment_1.getAttributes()))).thenReturn(1);
+        when(dao.update(payment_2, Payment.PaymentAttribute.toJson(payment_2.getAttributes()))).thenReturn(1);
         when(dao.deleteById(KNOWN_PAYMENT_ID_1)).thenReturn(1);
         when(dao.fetchOffsetLimit(1, 1)).thenReturn(new ArrayList<Payment>() {{
             add(payment_2);
@@ -102,7 +101,7 @@ public class PaymentResourceTest {
 
         assertTrue(comarePaymentResponse(response.readEntity(String.class), fixture("fixtures/payment_1.json")));
 
-        verify(dao).insert(payment_1, Payment.PaymentAttribute.getJson(payment_1.getAttributes()));
+        verify(dao).insert(payment_1, Payment.PaymentAttribute.toJson(payment_1.getAttributes()));
     }
 
     @Test
@@ -128,7 +127,7 @@ public class PaymentResourceTest {
 
         assertTrue(comarePaymentResponse(response.readEntity(String.class), fixture("fixtures/payment_2.json")));
 
-        verify(dao).update(payment_2, Payment.PaymentAttribute.getJson(payment_2.getAttributes()));
+        verify(dao).update(payment_2, Payment.PaymentAttribute.toJson(payment_2.getAttributes()));
     }
 
     @Test
@@ -142,7 +141,7 @@ public class PaymentResourceTest {
 
         assertThat(response.readEntity(String.class).isEmpty(), is(true));
 
-        verify(dao).update(payment_1, Payment.PaymentAttribute.getJson(payment_1.getAttributes()));
+        verify(dao).update(payment_1, Payment.PaymentAttribute.toJson(payment_1.getAttributes()));
     }
 
     @Test

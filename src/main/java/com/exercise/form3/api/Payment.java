@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * PaymentAttribute domain object representation
+ * Payment domain object representation
  */
 
 public class Payment {
@@ -33,25 +33,6 @@ public class Payment {
 
     public Payment() {
         // Jackson deserialization
-    }
-
-    public Payment(String type,
-                   String id,
-                   int version,
-                   String organisationId,
-                   String rawAttributes) {
-        this.type = type;
-        this.id = id;
-        this.version = version;
-        this.organisationId = organisationId;
-        // Jackson deserialization
-        if (!rawAttributes.isEmpty()) {
-            try {
-                this.attributes = MAPPER.readValue(rawAttributes, PaymentAttribute.class);
-            } catch (java.io.IOException e) {
-                System.err.println("IOException: " + e.getMessage());
-            }
-        }
     }
 
     @JsonCreator
@@ -122,9 +103,7 @@ public class Payment {
         if (!getId().equals(that.getId())) return false;
         if (getVersion() != that.getVersion()) return false;
         if (!getOrganisationId().equals(that.getOrganisationId())) return false;
-        if (!getAttributes().equals(that.getAttributes())) return false;
-
-        return true;
+        return getAttributes().equals(that.getAttributes());
     }
 
     static public class PaymentAttribute {
@@ -218,7 +197,7 @@ public class Payment {
             this.sponsorParty = sponsorParty;
         }
 
-        public static String getJson(PaymentAttribute paymentAttribute) {
+        public static String toJson(PaymentAttribute paymentAttribute) {
             StringBuilder sb = new StringBuilder();
             try {
                 sb.append(MAPPER.writeValueAsString(paymentAttribute));
@@ -226,6 +205,15 @@ public class Payment {
                 System.err.println("JsonProcessingException: " + e.getMessage());
             }
             return sb.toString();
+        }
+
+        public static PaymentAttribute fromJson(String json) {
+            try {
+                return MAPPER.readValue(json, PaymentAttribute.class);
+            } catch (java.io.IOException e) {
+                System.err.println("IOException: " + e.getMessage());
+            }
+            return null;
         }
 
         public String getAmount() {
@@ -319,9 +307,7 @@ public class Payment {
             if (!getReference().equals(that.getReference())) return false;
             if (!getSchemePaymentSubType().equals(that.getSchemePaymentSubType())) return false;
             if (!getSchemePaymentType().equals(that.getSchemePaymentType())) return false;
-            if (!getSponsorParty().equals(that.getSponsorParty())) return false;
-
-            return true;
+            return getSponsorParty().equals(that.getSponsorParty());
         }
     }
 
@@ -417,9 +403,7 @@ public class Payment {
             if (!getAddress().equals(that.getAddress())) return false;
             if (!getBankId().equals(that.getBankId())) return false;
             if (!getBankIdCode().equals(that.getBankIdCode())) return false;
-            if (!getName().equals(that.getName())) return false;
-
-            return true;
+            return getName().equals(that.getName());
         }
     }
 
@@ -475,9 +459,7 @@ public class Payment {
             if (!getBearerCode().equals(that.getBearerCode())) return false;
             if (!getSenderCharges().equals(that.getSenderCharges())) return false;
             if (!getReceiverChargesAmount().equals(that.getReceiverChargesAmount())) return false;
-            if (!getReceiverChargesCurrency().equals(that.getReceiverChargesCurrency())) return false;
-
-            return true;
+            return getReceiverChargesCurrency().equals(that.getReceiverChargesCurrency());
         }
     }
 
@@ -513,9 +495,7 @@ public class Payment {
             SenderCharges that = (SenderCharges) o;
 
             if (!getAmount().equals(that.getAmount())) return false;
-            if (!getCurrency().equals(that.getCurrency())) return false;
-
-            return true;
+            return getCurrency().equals(that.getCurrency());
         }
     }
 
@@ -601,9 +581,7 @@ public class Payment {
             if (!getAddress().equals(that.getAddress())) return false;
             if (!getBankId().equals(that.getBankId())) return false;
             if (!getBankIdCode().equals(that.getBankIdCode())) return false;
-            if (!getName().equals(that.getName())) return false;
-
-            return true;
+            return getName().equals(that.getName());
         }
     }
 
@@ -659,9 +637,7 @@ public class Payment {
             if (!getContractReference().equals(that.getContractReference())) return false;
             if (!getExchangeRate().equals(that.getExchangeRate())) return false;
             if (!getOriginalAmount().equals(that.getOriginalAmount())) return false;
-            if (!getOriginalCurrency().equals(that.getOriginalCurrency())) return false;
-
-            return true;
+            return getOriginalCurrency().equals(that.getOriginalCurrency());
         }
     }
 
@@ -707,9 +683,7 @@ public class Payment {
 
             if (!getAccountNumber().equals(that.getAccountNumber())) return false;
             if (!getBankId().equals(that.getBankId())) return false;
-            if (!getBankIdCode().equals(that.getBankIdCode())) return false;
-
-            return true;
+            return getBankIdCode().equals(that.getBankIdCode());
         }
     }
 }
